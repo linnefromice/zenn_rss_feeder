@@ -6,11 +6,10 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:linnefromice/main.dart';
+import 'package:linnefromice/views/home_page.dart';
 
 void main() {
   testWidgets('Dummy', (tester) async {
-    await tester.pumpWidget(App());
+    await tester.pumpWidget(HomePage());
   });
 }
