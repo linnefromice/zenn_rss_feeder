@@ -72,8 +72,8 @@ class GenrePage extends StatefulWidget {
 class _State extends State<GenrePage> {
   @override
   Widget build(BuildContext context) {
-    return MainAppScaffold(
-      child: GridView.count(
+    return Scaffold(
+      body: GridView.count(
         crossAxisCount: 3,
         children: List.generate(genres.length, (index) {
           return Center(
