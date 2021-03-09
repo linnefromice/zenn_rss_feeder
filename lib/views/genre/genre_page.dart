@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:linnefromice/views/feed/feed_page.dart';
 
 class _Genre {
   final String name;
@@ -87,17 +88,26 @@ class _State extends State<GenrePage> {
         scrollDirection: Axis.vertical,
         mainAxisSpacing: 4.0,
         children: List.generate(genres.length, (index) {
-          return Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(genres[index].imgUrl)
-                ),
-                Text(genres[index].name)
-              ],
-            )
+          return GestureDetector(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => FeedPage(
+                  topicCode: genres[index].topicCode,
+                )
+              )
+            ),
+            child: Card(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(genres[index].imgUrl)
+                  ),
+                  Text(genres[index].name)
+                ],
+              )
+            ),
           );
         })
       ),
