@@ -94,7 +94,12 @@ class FeedPage extends StatelessWidget {
           }
           return Center(child: CircularProgressIndicator());
         },
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.arrow_back),
+        onPressed: () => Navigator.of(context).pop()
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }
