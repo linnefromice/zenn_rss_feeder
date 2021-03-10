@@ -20,12 +20,22 @@ class Feed {
     @required this.link
   });
 
-  factory Feed.fromJson(Map<String, dynamic> json) {
+  factory Feed.fromJsonOfParker(Map<String, dynamic> json) {
+    return Feed(
+      title: json['title'],
+      authorName: json['dc:creator'],
+      pubDate: json['pubDate'],
+      description: json['description'].replaceAll("\\\\n", "\n"),
+      link: json['link']
+    );
+  }
+
+  factory Feed.fromJsonOfGData(Map<String, dynamic> json) {
     return Feed(
       title: json['title']['__cdata'],
       authorName: json['dc\$creator']['\$t'],
       pubDate: json['pubDate']['\$t'],
-      description: json['description']['__cdata'].replaceAll("\\n", "\n"),
+      description: json['description']['__cdata'].replaceAll("\\\\n", "\n"),
       link: json['link']['\$t']
     );
   }
@@ -44,10 +54,10 @@ class FeedPage extends StatelessWidget {
       return utf8.decode(response.bodyBytes);
     }).then((bodyString) {
       transformer.parse(bodyString);
-      final String json = transformer.toGData()
+      final String json = transformer.toParker()
           .replaceAll("\\.", ""); // FormatException: Unrecognized string escape -> \.
       final List<dynamic> list = jsonDecode(json)['rss']['channel']['item'];
-      return list.map((json) => Feed.fromJson(json)).toList();
+      return list.map((json) => Feed.fromJsonOfParker(json)).toList();
     });
   }
 
