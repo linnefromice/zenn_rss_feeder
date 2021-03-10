@@ -91,34 +91,56 @@ class _State extends State<GenrePage> {
       )
     );
 
+  GridView _buildGridView(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 3,
+      scrollDirection: Axis.vertical,
+      mainAxisSpacing: 4.0,
+      children: List.generate(genres.length, (index) {
+        return GestureDetector(
+          onTap: () => _navigateToFeedPage(
+            context: context,
+            topicCode: genres[index].topicCode
+          ),
+          child: Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(genres[index].imgUrl)
+                ),
+                Text(genres[index].name)
+              ],
+            )
+          ),
+        );
+      })
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GridView.count(
-        crossAxisCount: 3,
-        scrollDirection: Axis.vertical,
-        mainAxisSpacing: 4.0,
-        children: List.generate(genres.length, (index) {
-          return GestureDetector(
-            onTap: () => _navigateToFeedPage(
-              context: context,
-              topicCode: genres[index].topicCode
+      body: Column(
+        children: [
+          SizedBox(height: 50),
+          TextField(
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              contentPadding: EdgeInsets.all(20.0),
+              hintText: 'Filter by genre name',
+              border: OutlineInputBorder(),
             ),
-            child: Card(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(genres[index].imgUrl)
-                  ),
-                  Text(genres[index].name)
-                ],
-              )
-            ),
-          );
-        })
+            onChanged: (value) {},
+          ),
+          Expanded(
+            child: _buildGridView(context)
+          )
+        ],
       ),
     );
   }
+
 }
