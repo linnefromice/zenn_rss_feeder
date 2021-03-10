@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:linnefromice/views/feed/feed_page.dart';
+import '../feed/feed_page.dart';
 
 class _Genre {
   final String name;
@@ -80,6 +80,17 @@ class GenrePage extends StatefulWidget {
 }
 
 class _State extends State<GenrePage> {
+  void _navigateToFeedPage({
+      @required final BuildContext context,
+      @required final String topicCode
+    }) => Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FeedPage(
+          topicCode: topicCode,
+        )
+      )
+    );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,12 +100,9 @@ class _State extends State<GenrePage> {
         mainAxisSpacing: 4.0,
         children: List.generate(genres.length, (index) {
           return GestureDetector(
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => FeedPage(
-                  topicCode: genres[index].topicCode,
-                )
-              )
+            onTap: () => _navigateToFeedPage(
+              context: context,
+              topicCode: genres[index].topicCode
             ),
             child: Card(
               child: Column(

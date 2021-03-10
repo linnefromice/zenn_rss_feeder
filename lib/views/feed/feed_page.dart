@@ -36,7 +36,8 @@ class FeedPage extends StatelessWidget {
   final String topicCode;
 
   String _buildPath(final String topicCode) => "/topics/$topicCode/feed";
-  Future<List<Feed>> feed(final String path) async {
+
+  Future<List<Feed>> _feed(final String path) async {
     final client = new http.Client();
     final transformer = Xml2Json();
     return await client.get(Uri.https('zenn.dev', path)).then((response) {
@@ -81,7 +82,7 @@ class FeedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: feed(_buildPath(topicCode)),
+        future: _feed(_buildPath(topicCode)),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text(snapshot.error.toString()));
