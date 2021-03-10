@@ -11,7 +11,7 @@ class _Genre {
 final String baseUrl = "https://zenn.dev/topics/";
 final String suffixForRss = "/feed";
 
-final List<_Genre> genres = [
+final List<_Genre> originalGenres = [
   _Genre("JavaScript", "https://storage.googleapis.com/zenn-topics/javascript.png", "javascript"),
   _Genre("Python", "https://storage.googleapis.com/zenn-topics/python.png", "python"),
   _Genre("TypeScript", "https://storage.googleapis.com/zenn-topics/typescript.png", "typescript"),
@@ -80,6 +80,8 @@ class GenrePage extends StatefulWidget {
 }
 
 class _State extends State<GenrePage> {
+  List<_Genre> genres = originalGenres;
+
   void _navigateToFeedPage({
       @required final BuildContext context,
       @required final String topicCode
@@ -133,7 +135,11 @@ class _State extends State<GenrePage> {
               hintText: 'Filter by genre name',
               border: OutlineInputBorder(),
             ),
-            onChanged: (value) {},
+            onChanged: (value) => setState(() {
+              genres = originalGenres.where(
+                (element) => element.name.contains(value)
+              ).toList();
+            }),
           ),
           Expanded(
             child: _buildGridView(context)
