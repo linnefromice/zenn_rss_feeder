@@ -73,9 +73,10 @@ class FeedPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_back),
+        backgroundColor: Colors.grey,
         onPressed: () => Navigator.of(context).pop()
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
