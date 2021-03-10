@@ -93,6 +93,22 @@ class _State extends State<GenrePage> {
       )
     );
 
+  TextField _buildSearchField() {
+    return TextField(
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.search),
+        contentPadding: EdgeInsets.all(20.0),
+        hintText: 'Filter by genre name',
+        border: OutlineInputBorder(),
+      ),
+      onChanged: (value) => setState(() {
+        genres = originalGenres.where(
+                (element) => element.name.contains(value)
+        ).toList();
+      }),
+    );
+  }
+
   GridView _buildGridView(BuildContext context) {
     return GridView.count(
       crossAxisCount: 3,
@@ -121,26 +137,13 @@ class _State extends State<GenrePage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
           SizedBox(height: 50),
-          TextField(
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              contentPadding: EdgeInsets.all(20.0),
-              hintText: 'Filter by genre name',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (value) => setState(() {
-              genres = originalGenres.where(
-                (element) => element.name.contains(value)
-              ).toList();
-            }),
-          ),
+          _buildSearchField(),
           Expanded(
             child: _buildGridView(context)
           )
@@ -148,5 +151,4 @@ class _State extends State<GenrePage> {
       ),
     );
   }
-
 }
