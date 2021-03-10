@@ -13,11 +13,11 @@ class Feed {
   final String link;
 
   Feed({
-    this.title,
-    this.authorName,
-    this.pubDate,
-    this.description,
-    this.link
+    @required this.title,
+    @required this.authorName,
+    @required this.pubDate,
+    @required this.description,
+    @required this.link
   });
 
   factory Feed.fromJson(Map<String, dynamic> json) {
@@ -38,7 +38,7 @@ class FeedPage extends StatelessWidget {
   String _buildPath(final String topicCode) => "/topics/$topicCode/feed";
 
   Future<List<Feed>> _feed(final String path) async {
-    final client = new http.Client();
+    final client = http.Client();
     final transformer = Xml2Json();
     return await client.get(Uri.https('zenn.dev', path)).then((response) {
       return utf8.decode(response.bodyBytes);
@@ -55,8 +55,7 @@ class FeedPage extends StatelessWidget {
     return Card(
       child: GestureDetector(
         onTap: () async {
-          String url = feed.link;
-          print(url);
+          var url = feed.link;
           if (await canLaunch(url)) {
             await launch(url);
           } else {
