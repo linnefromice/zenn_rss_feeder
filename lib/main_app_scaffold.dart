@@ -15,9 +15,7 @@ class _State extends State<MainAppScaffold> {
       title: 'RSS Feeder for zenn.dev',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: Scaffold(
-        body: widget.child,
-      ),
+      home: widget.child
     );
   }
 }

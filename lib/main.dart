@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'views/home_page.dart';
+import 'main_app_scaffold.dart';
+import 'views/genre/genre_page.dart';
 
 void main() {
   runApp(
-    HomePage()
+    MainAppScaffold(child: GenrePage())
   );
 }
