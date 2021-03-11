@@ -7,9 +7,15 @@ import 'package:xml2json/xml2json.dart';
 
 import '../../models/feed.dart';
 
-class FeedPage extends StatelessWidget {
+class FeedPage extends StatefulWidget {
   const FeedPage({Key key, this.topicCode}) : super(key: key);
   final String topicCode;
+
+  @override
+  _State createState() => _State();
+}
+
+class _State extends State<FeedPage> {
 
   String _buildPath(final String topicCode) => "/topics/$topicCode/feed";
 
@@ -25,6 +31,18 @@ class FeedPage extends StatelessWidget {
       final List<dynamic> list = jsonDecode(json)['rss']['channel']['item'];
       return list.map((json) => Feed.fromJsonOfParker(json)).toList();
     });
+  }
+
+  TextField _buildSearchField() {
+    return TextField(
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.search),
+        contentPadding: EdgeInsets.all(20.0),
+        hintText: 'Filter by title or description',
+        border: OutlineInputBorder(),
+      ),
+      onChanged: (value) {}
+    );
   }
 
   Widget _buildCard(final Feed feed) {
@@ -56,20 +74,28 @@ class FeedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: _feed(_buildPath(topicCode)),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
-          }
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) => _buildCard(snapshot.data[index]),
-            );
-          }
-          return Center(child: CircularProgressIndicator());
-        },
+      body: Column(
+        children: [
+          SizedBox(height: 50),
+          _buildSearchField(),
+          Expanded(
+            child: FutureBuilder(
+              future: _feed(_buildPath(widget.topicCode)),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: Text(snapshot.error.toString()));
+                }
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) => _buildCard(snapshot.data[index]),
+                  );
+                }
+                return Center(child: CircularProgressIndicator());
+              },
+            ),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_back),
