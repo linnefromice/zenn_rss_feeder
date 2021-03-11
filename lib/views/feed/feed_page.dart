@@ -7,15 +7,9 @@ import 'package:xml2json/xml2json.dart';
 
 import '../../models/feed.dart';
 
-class FeedPage extends StatefulWidget {
+class FeedPage extends StatelessWidget {
   const FeedPage({Key key, this.topicCode}) : super(key: key);
   final String topicCode;
-
-  @override
-  _State createState() => _State();
-}
-
-class _State extends State<FeedPage> {
 
   String _buildPath(final String topicCode) => "/topics/$topicCode/feed";
 
@@ -33,6 +27,40 @@ class _State extends State<FeedPage> {
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FutureBuilder(
+        future: _feed(_buildPath(topicCode)),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text(snapshot.error.toString()));
+          }
+          if (snapshot.hasData) {
+            return _Contents(feeds: snapshot.data);
+          }
+          return Center(child: CircularProgressIndicator());
+        }
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.arrow_back),
+        backgroundColor: Colors.grey,
+        onPressed: () => Navigator.of(context).pop()
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+class _Contents extends StatefulWidget {
+  const _Contents({Key key, this.feeds}) : super(key: key);
+  final List<Feed> feeds;
+
+  @override
+  _State createState() => _State();
+}
+
+class _State extends State<_Contents> {
   TextField _buildSearchField() {
     return TextField(
       decoration: InputDecoration(
@@ -73,36 +101,17 @@ class _State extends State<FeedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(height: 50),
-          _buildSearchField(),
-          Expanded(
-            child: FutureBuilder(
-              future: _feed(_buildPath(widget.topicCode)),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Center(child: Text(snapshot.error.toString()));
-                }
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) => _buildCard(snapshot.data[index]),
-                  );
-                }
-                return Center(child: CircularProgressIndicator());
-              },
-            ),
+    return Column(
+      children: [
+        SizedBox(height: 50),
+        _buildSearchField(),
+        Expanded(
+          child: ListView.builder(
+            itemCount: widget.feeds.length,
+            itemBuilder: (context, index) => _buildCard(widget.feeds[index]),
           )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.arrow_back),
-        backgroundColor: Colors.grey,
-        onPressed: () => Navigator.of(context).pop()
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        )
+      ],
     );
   }
 }
