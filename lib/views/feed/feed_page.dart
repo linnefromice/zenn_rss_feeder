@@ -61,6 +61,24 @@ class _Contents extends StatefulWidget {
 }
 
 class _State extends State<_Contents> {
+  List<Feed> searchedFeeds;
+
+  @override
+  void initState() {
+    super.initState();
+    searchedFeeds =  widget.feeds;
+  }
+
+  void _search(final String value) async {
+    final result = widget.feeds.where(
+      (element) =>
+        element.title.contains(value) || element.description.contains(value)
+    ).toList();
+    setState(() {
+      searchedFeeds = result;
+    });
+  }
+
   TextField _buildSearchField() {
     return TextField(
       decoration: InputDecoration(
@@ -69,7 +87,7 @@ class _State extends State<_Contents> {
         hintText: 'Filter by title or description',
         border: OutlineInputBorder(),
       ),
-      onChanged: (value) {}
+      onChanged: _search
     );
   }
 
@@ -107,8 +125,8 @@ class _State extends State<_Contents> {
         _buildSearchField(),
         Expanded(
           child: ListView.builder(
-            itemCount: widget.feeds.length,
-            itemBuilder: (context, index) => _buildCard(widget.feeds[index]),
+            itemCount: searchedFeeds.length,
+            itemBuilder: (context, index) => _buildCard(searchedFeeds[index]),
           )
         )
       ],
