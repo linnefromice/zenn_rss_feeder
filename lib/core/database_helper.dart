@@ -20,8 +20,8 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String path = documentDirectory.path + _dbName;
+    final documentDirectory = await getApplicationDocumentsDirectory();
+    final path = documentDirectory.path + _dbName;
     // await deleteDatabase(path); // for development
     return await openDatabase(
       path,
@@ -46,23 +46,34 @@ class DatabaseHelper {
   }
 
   Future<int> insert(final Map<String, dynamic> row, final String table) async {
-    final Database db = await instance.getDatabase();
+    final db = await instance.getDatabase();
     return await db.insert(table, row);
   }
 
   Future<List<Map<String, dynamic>>> selectAllRows(final String table) async {
-    final Database db = await instance.getDatabase();
+    final db = await instance.getDatabase();
     return await db.query(table);
   }
 
-  Future<List<Map<String, dynamic>>> selectAllRowsOrderBySpecified(final String table, final String sortColumn) async {
-    final Database db = await instance.getDatabase();
+  Future<List<Map<String, dynamic>>> selectAllRowsOrderBySpecified(
+    final String table,
+    final String sortColumn
+  ) async {
+    final db = await instance.getDatabase();
     return await db.query(table, orderBy: sortColumn);
   }
 
-  Future<Map<String, dynamic>> selectOneRow(final String primaryKeyName, final String primaryKeyValue, final String table) async {
-    final Database db = await instance.getDatabase();
-    final List result = await db.query(table, where: '$primaryKeyName = ?', whereArgs: [primaryKeyValue]);
+  Future<Map<String, dynamic>> selectOneRow(
+    final String primaryKeyName,
+    final String primaryKeyValue,
+    final String table
+  ) async {
+    final db = await instance.getDatabase();
+    final result = await db.query(
+      table,
+      where: '$primaryKeyName = ?',
+      whereArgs: [primaryKeyValue]
+    );
     if (result.length == 1) {
       return result[0];
     } else {
@@ -71,18 +82,36 @@ class DatabaseHelper {
   }
 
   Future<int> countAllRows(final String table) async {
-    final Database db = await instance.getDatabase();
-    return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $table'));
+    final db = await instance.getDatabase();
+    return Sqflite.firstIntValue(
+      await db.rawQuery('SELECT COUNT(*) FROM $table')
+    );
   }
 
-  Future<int> update(final Map<String, dynamic> row, final String primaryKeyName, final String table) async {
-    final Database db = await instance.getDatabase();
+  Future<int> update(
+    final Map<String, dynamic> row,
+    final String primaryKeyName,
+    final String table
+  ) async {
+    final db = await instance.getDatabase();
     final primaryKeyValue = row[primaryKeyName];
-    return await db.update(table, row, where: '$primaryKeyName = ?', whereArgs: [primaryKeyValue]);
+    return await db.update(
+      table,
+      row,
+      where: '$primaryKeyName = ?', whereArgs: [primaryKeyValue]
+    );
   }
 
-  Future<int> delete(final String primaryKeyName, final String primaryKeyValue, final String table) async {
-    final Database db = await instance.getDatabase();
-    return await db.delete(table, where: '$primaryKeyName = ?', whereArgs: [primaryKeyValue]);
+  Future<int> delete(
+    final String primaryKeyName,
+    final String primaryKeyValue,
+    final String table
+  ) async {
+    final db = await instance.getDatabase();
+    return await db.delete(
+      table,
+      where: '$primaryKeyName = ?',
+      whereArgs: [primaryKeyValue]
+    );
   }
 }
