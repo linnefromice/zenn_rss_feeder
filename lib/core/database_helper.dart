@@ -7,7 +7,7 @@ class DatabaseHelper {
   static final _dbName = 'zenn_rss_feeder_db.db';
   static final _dbVersion = 1;
 
-  static final tableName = 'FavoriteFeed';
+  static final tableName = 'favorite_feed';
 
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -36,6 +36,7 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         genre TEXT NOT NULL,
+        addedDate TEXT NOT NULL,
         authorName TEXT NOT NULL,
         pubDate TEXT NOT NULL,
         description TEXT NOT NULL,
