@@ -1,6 +1,7 @@
-import 'package:linnefromice/core/database_helper.dart';
-import 'package:linnefromice/models/feed.dart';
+import '../core/database_helper.dart';
+import '../models/feed.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class FavoriteFeedRepository {
   static final _tableName = 'favorite_feed';
   static final _primaryKeyName = 'id';
@@ -8,22 +9,29 @@ class FavoriteFeedRepository {
   static DatabaseHelper dbHelper = DatabaseHelper.instance;
 
   static Future<List<Feed>> selectAll() async {
-    final List<Map<String, dynamic>> rows = await dbHelper.selectAllRows(_tableName);
-    List<Feed> dtos = [];
-    rows.forEach((row) => dtos.add(Feed.fromJson(row)));
+    final rows = await dbHelper.selectAllRows(_tableName);
+    var dtos = <Feed>[];
+    for (var row in rows) {
+      dtos.add(Feed.fromJson(row));
+    }
     return dtos;
   }
 
   static Future<List<Feed>> selectAllSortedByFromDate() async {
-    final List<Map<String, dynamic>> rows = await dbHelper.selectAllRowsOrderBySpecified(_tableName, _orderByColumn);
-    List<Feed> dtos = [];
-    rows.forEach((row) => dtos.add(Feed.fromJson(row)));
+    final rows = await dbHelper.selectAllRowsOrderBySpecified(
+      _tableName,
+      _orderByColumn
+    );
+    var dtos = <Feed>[];
+    for (var row in rows) {
+      dtos.add(Feed.fromJson(row));
+    }
     return dtos;
   }
 
 
   static Future<Feed> selectOne(final int id) async {
-    final Map<String, dynamic> row = await dbHelper.selectOneRow(
+    final row = await dbHelper.selectOneRow(
       _primaryKeyName,
       id.toString(),
       _tableName
