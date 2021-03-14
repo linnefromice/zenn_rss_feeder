@@ -1,3 +1,5 @@
+import 'package:linnefromice/models/favorite_feed.dart';
+
 import '../core/database_helper.dart';
 import '../models/feed.dart';
 
@@ -8,29 +10,29 @@ class FavoriteFeedRepository {
   static final _orderByColumn = 'addedDate';
   static DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-  static Future<List<Feed>> selectAll() async {
+  static Future<List<FavoriteFeed>> selectAll() async {
     final rows = await dbHelper.selectAllRows(_tableName);
-    var dtos = <Feed>[];
+    var dtos = <FavoriteFeed>[];
     for (var row in rows) {
-      dtos.add(Feed.fromJson(row));
+      dtos.add(FavoriteFeed.fromJson(row));
     }
     return dtos;
   }
 
-  static Future<List<Feed>> selectAllSortedByFromDate() async {
+  static Future<List<FavoriteFeed>> selectAllSortedByFromDate() async {
     final rows = await dbHelper.selectAllRowsOrderBySpecified(
       _tableName,
       _orderByColumn
     );
-    var dtos = <Feed>[];
+    var dtos = <FavoriteFeed>[];
     for (var row in rows) {
-      dtos.add(Feed.fromJson(row));
+      dtos.add(FavoriteFeed.fromJson(row));
     }
     return dtos;
   }
 
 
-  static Future<Feed> selectOne(final int id) async {
+  static Future<FavoriteFeed> selectOne(final int id) async {
     final row = await dbHelper.selectOneRow(
       _primaryKeyName,
       id.toString(),
@@ -39,15 +41,15 @@ class FavoriteFeedRepository {
     if (row == null) {
       return null;
     } else {
-      return Feed.fromJson(row);
+      return FavoriteFeed.fromJson(row);
     }
   }
 
-  static Future<int> insert(final Feed dto) async {
+  static Future<int> insert(final FavoriteFeed dto) async {
     return await dbHelper.insert(dto.toJson(), _tableName);
   }
 
-  static Future<int> update(final Feed dto) async {
+  static Future<int> update(final FavoriteFeed dto) async {
     return await dbHelper.update(
       dto.toJson(),
       _primaryKeyName,
