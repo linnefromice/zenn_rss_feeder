@@ -17,7 +17,7 @@ class FavoriteFeedRepository {
     return dtos;
   }
 
-  static Future<List<FavoriteFeed>> selectAllSortedByFromDate() async {
+  static Future<List<FavoriteFeed>> selectAllSortedByAddedDate() async {
     final rows = await dbHelper.selectAllRowsOrderBySpecified(
       _tableName,
       _orderByColumn
