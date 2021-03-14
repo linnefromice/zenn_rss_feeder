@@ -38,7 +38,7 @@ class Feed {
   factory Feed.fromJson(Map<String, dynamic> json) {
     return Feed(
         title: json['title'],
-        authorName: json['dc:creator'],
+        authorName: json['authorName'],
         pubDate: json['pubDate'],
         description: json['description'],
         link: json['link']
