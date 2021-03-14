@@ -34,4 +34,23 @@ class Feed {
         link: json['link']['\$t']
     );
   }
+
+  factory Feed.fromJson(Map<String, dynamic> json) {
+    return Feed(
+        title: json['title'],
+        authorName: json['authorName'],
+        pubDate: json['pubDate'],
+        description: json['description'],
+        link: json['link']
+    );
+  }
+
+
+  Map<String, dynamic> toJson() => {
+    "title": title,
+    "authorName": authorName,
+    "pubDate": pubDate,
+    "description": description,
+    "link": link,
+  };
 }

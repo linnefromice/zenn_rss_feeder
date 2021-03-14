@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:linnefromice/services/favorite_feed_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:xml2json/xml2json.dart';
 
+import '../../models/favorite_feed.dart';
 import '../../models/feed.dart';
 
 class FeedPage extends StatelessWidget {
@@ -37,7 +39,10 @@ class FeedPage extends StatelessWidget {
             return Center(child: Text(snapshot.error.toString()));
           }
           if (snapshot.hasData) {
-            return _Contents(feeds: snapshot.data);
+            return _Contents(
+              topicCode: topicCode,
+              feeds: snapshot.data
+            );
           }
           return Center(child: CircularProgressIndicator());
         }
@@ -53,7 +58,8 @@ class FeedPage extends StatelessWidget {
 }
 
 class _Contents extends StatefulWidget {
-  const _Contents({Key key, this.feeds}) : super(key: key);
+  const _Contents({Key key, this.topicCode, this.feeds}) : super(key: key);
+  final String topicCode;
   final List<Feed> feeds;
 
   @override
@@ -102,6 +108,16 @@ class _State extends State<_Contents> {
             throw 'Could not launch $url';
           }
         },
+        onLongPress: () async {
+          final favorited = FavoriteFeed(
+            genre: widget.topicCode,
+            feed: feed,
+            addedDate: DateTime.now().toString()
+          );
+          await FavoriteFeedService.insert(favorited);
+          ScaffoldMessenger.of(context)
+              .showSnackBar(successSnackBar(message: "Add Favorite Feed!!!"));
+        },
         child: ListTile(
           title: Text(feed.title),
           subtitle: Column(
@@ -133,3 +149,12 @@ class _State extends State<_Contents> {
     );
   }
 }
+
+SnackBar successSnackBar({final String message}) => SnackBar(
+  content: Text(
+    message != null ? message : "Success!!",
+    textAlign: TextAlign.center,
+  ),
+  duration: Duration(seconds: 1),
+  backgroundColor: Colors.green[200],
+);
