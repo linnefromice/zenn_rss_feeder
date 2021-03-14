@@ -85,6 +85,8 @@ class _State extends State<_Contents> {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(favoriteFeed.genre),
+              Text(favoriteFeed.addedDate),
               Text(favoriteFeed.feed.authorName),
               Text(favoriteFeed.feed.pubDate),
               Text(favoriteFeed.feed.description)
