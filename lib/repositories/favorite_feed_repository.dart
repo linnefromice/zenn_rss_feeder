@@ -1,7 +1,5 @@
-import 'package:linnefromice/models/favorite_feed.dart';
-
 import '../core/database_helper.dart';
-import '../models/feed.dart';
+import '../models/favorite_feed.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class FavoriteFeedRepository {
