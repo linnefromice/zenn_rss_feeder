@@ -149,6 +149,12 @@ class _State extends State<GenrePage> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.favorite),
+          backgroundColor: Colors.pink,
+          onPressed: () {}
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
