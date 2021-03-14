@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../favorite_feed/favorite_feed_page.dart';
 import '../feed/feed_page.dart';
 
 class _Genre {
@@ -152,7 +153,11 @@ class _State extends State<GenrePage> {
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.favorite),
           backgroundColor: Colors.pink,
-          onPressed: () {}
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FavoriteFeedPage()
+            )
+          ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
