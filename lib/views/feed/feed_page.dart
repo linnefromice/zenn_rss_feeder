@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:linnefromice/services/favorite_feed_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:xml2json/xml2json.dart';
 
 import '../../models/favorite_feed.dart';
 import '../../models/feed.dart';
+import '../../services/favorite_feed_service.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({Key key, this.topicCode}) : super(key: key);
@@ -97,6 +97,19 @@ class _State extends State<_Contents> {
     );
   }
 
+  Widget _buildListTile(final Feed feed) {
+    return ListTile(
+      title: Text(feed.title),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("${feed.pubDate} @${feed.authorName}"),
+          Text("${feed.description.substring(0, 50)}...")
+        ],
+      ),
+    );
+  }
+
   Widget _buildCard(final Feed feed) {
     return Card(
       child: GestureDetector(
@@ -118,16 +131,7 @@ class _State extends State<_Contents> {
           ScaffoldMessenger.of(context)
               .showSnackBar(successSnackBar(message: "Add Favorite Feed!!!"));
         },
-        child: ListTile(
-          title: Text(feed.title),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("${feed.pubDate} @${feed.authorName}"),
-              Text("${feed.description.substring(0, 50)}...")
-            ],
-          ),
-        ),
+        child: _buildListTile(feed)
       ),
     );
   }

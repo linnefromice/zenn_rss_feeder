@@ -69,6 +69,21 @@ class _State extends State<_Contents> {
     );
   }
 
+  Widget _buildListTile(final FavoriteFeed favoriteFeed) {
+    return ListTile(
+      title: Text(favoriteFeed.feed.title),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(favoriteFeed.genre),
+          Text(favoriteFeed.addedDate),
+          Text("${favoriteFeed.feed.pubDate} @${favoriteFeed.feed.authorName}"),
+          Text("${favoriteFeed.feed.description.substring(0, 50)}...")
+        ],
+      ),
+    );
+  }
+
   Widget _buildCard(final FavoriteFeed favoriteFeed) {
     return Card(
       child: GestureDetector(
@@ -80,18 +95,7 @@ class _State extends State<_Contents> {
             throw 'Could not launch $url';
           }
         },
-        child: ListTile(
-          title: Text(favoriteFeed.feed.title),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(favoriteFeed.genre),
-              Text(favoriteFeed.addedDate),
-              Text("${favoriteFeed.feed.pubDate} @${favoriteFeed.feed.authorName}"),
-              Text("${favoriteFeed.feed.description.substring(0, 50)}...")
-            ],
-          ),
-        ),
+        child: _buildListTile(favoriteFeed)
       ),
     );
   }
