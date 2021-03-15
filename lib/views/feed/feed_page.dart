@@ -131,6 +131,40 @@ class _State extends State<_Contents> {
           ScaffoldMessenger.of(context)
               .showSnackBar(successSnackBar(message: "Add Favorite Feed!!!"));
         },
+        onDoubleTap: () => showDialog(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              title: Column(
+                children: [
+                  Text(feed.title),
+                  Text("${feed.pubDate} @${feed.authorName}"),
+                ],
+              ),
+              content: SingleChildScrollView(
+                child: Text(feed.description),
+              ),
+              actions: <Widget>[
+                // ボタン領域
+                TextButton(
+                  child: Text("Move Site"),
+                  onPressed: () async {
+                    var url = feed.link;
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                ),
+                TextButton(
+                  child: Text("CLOSE"),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            );
+          }
+        ),
         child: _buildListTile(feed)
       ),
     );
