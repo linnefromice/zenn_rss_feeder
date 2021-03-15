@@ -123,8 +123,7 @@ class _State extends State<_Contents> {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(feed.authorName),
-              Text(feed.pubDate),
+              Text("${feed.pubDate} @${feed.authorName}"),
               Text("${feed.description.substring(0, 50)}...")
             ],
           ),

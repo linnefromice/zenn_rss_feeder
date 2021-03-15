@@ -87,8 +87,7 @@ class _State extends State<_Contents> {
             children: [
               Text(favoriteFeed.genre),
               Text(favoriteFeed.addedDate),
-              Text(favoriteFeed.feed.authorName),
-              Text(favoriteFeed.feed.pubDate),
+              Text("${favoriteFeed.feed.pubDate} @${favoriteFeed.feed.authorName}"),
               Text("${favoriteFeed.feed.description.substring(0, 50)}...")
             ],
           ),
