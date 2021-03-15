@@ -89,7 +89,7 @@ class _State extends State<_Contents> {
               Text(favoriteFeed.addedDate),
               Text(favoriteFeed.feed.authorName),
               Text(favoriteFeed.feed.pubDate),
-              Text(favoriteFeed.feed.description)
+              Text("${favoriteFeed.feed.description.substring(0, 50)}...")
             ],
           ),
         ),

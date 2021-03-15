@@ -125,7 +125,7 @@ class _State extends State<_Contents> {
             children: [
               Text(feed.authorName),
               Text(feed.pubDate),
-              Text(feed.description)
+              Text("${feed.description.substring(0, 50)}...")
             ],
           ),
         ),
