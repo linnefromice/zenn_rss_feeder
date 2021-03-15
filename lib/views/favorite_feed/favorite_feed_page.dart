@@ -95,6 +95,40 @@ class _State extends State<_Contents> {
             throw 'Could not launch $url';
           }
         },
+        onDoubleTap: () => showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Column(
+                  children: [
+                    Text(favoriteFeed.feed.title),
+                    Text("${favoriteFeed.feed.pubDate} @${favoriteFeed.feed.authorName}"),
+                  ],
+                ),
+                content: SingleChildScrollView(
+                  child: Text(favoriteFeed.feed.description),
+                ),
+                actions: <Widget>[
+                  // ボタン領域
+                  TextButton(
+                    child: Text("Move Site"),
+                    onPressed: () async {
+                      var url = favoriteFeed.feed.link;
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                  ),
+                  TextButton(
+                    child: Text("CLOSE"),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              );
+            }
+        ),
         child: _buildListTile(favoriteFeed)
       ),
     );
