@@ -49,8 +49,8 @@ class _State extends State<_Contents> {
 
   void _search(final String value) async {
     final result = widget.feeds.where(
-            (element) =>
-        element.feed.title.contains(value) || element.feed.description.contains(value)
+      (element) => element.feed.title.contains(value)
+          || element.feed.description.contains(value)
     ).toList();
     setState(() {
       searchedFeeds = result;

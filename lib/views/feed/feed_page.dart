@@ -22,7 +22,7 @@ class FeedPage extends StatelessWidget {
       return utf8.decode(response.bodyBytes);
     }).then((bodyString) {
       transformer.parse(bodyString);
-      final String json = transformer.toParker()
+      final json = transformer.toParker()
           .replaceAll("\\.", ""); // FormatException: Unrecognized string escape -> \.
       final List<dynamic> list = jsonDecode(json)['rss']['channel']['item'];
       return list.map((json) => Feed.fromJsonOfParker(json)).toList();
@@ -122,12 +122,12 @@ class _State extends State<_Contents> {
           }
         },
         onLongPress: () async {
-          final favorited = FavoriteFeed(
+          final favoriteFeed = FavoriteFeed(
             genre: widget.topicCode,
             feed: feed,
             addedDate: DateTime.now().toString()
           );
-          await FavoriteFeedService.insert(favorited);
+          await FavoriteFeedService.insert(favoriteFeed);
           ScaffoldMessenger.of(context)
               .showSnackBar(successSnackBar(message: "Add Favorite Feed!!!"));
         },
