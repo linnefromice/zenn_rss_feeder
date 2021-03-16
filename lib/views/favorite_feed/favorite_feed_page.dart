@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../models/favorite_feed.dart';
+import '../../models/feed.dart';
 import '../../services/favorite_feed_service.dart';
 
 class FavoriteFeedPage extends StatelessWidget {
@@ -92,43 +94,38 @@ class _State extends State<_Contents> {
     );
   }
 
+  Widget _buildAlertDialog(final BuildContext context, final Feed feed) {
+    return AlertDialog(
+      title: Column(
+        children: [
+          Text(feed.title),
+          Text("${feed.pubDate} @${feed.authorName}"),
+        ],
+      ),
+      content: SingleChildScrollView(
+        child: Text(feed.description),
+      ),
+      actions: <Widget>[
+        // ボタン領域
+        TextButton(
+          child: Text("Move Site"),
+          onPressed: () => _navigateArticle(feed.link)
+        ),
+        TextButton(
+          child: Text("CLOSE"),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ],
+    );
+  }
+
   Widget _buildCard(final FavoriteFeed favoriteFeed) {
     return Card(
       child: GestureDetector(
         onTap: () => _navigateArticle(favoriteFeed.feed.link),
         onDoubleTap: () => showDialog(
           context: context,
-          builder: (_) {
-            return AlertDialog(
-              title: Column(
-                children: [
-                  Text(favoriteFeed.feed.title),
-                  Text("${favoriteFeed.feed.pubDate} @${favoriteFeed.feed.authorName}"),
-                ],
-              ),
-              content: SingleChildScrollView(
-                child: Text(favoriteFeed.feed.description),
-              ),
-              actions: <Widget>[
-                // ボタン領域
-                TextButton(
-                  child: Text("Move Site"),
-                  onPressed: () async {
-                    var url = favoriteFeed.feed.link;
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                ),
-                TextButton(
-                  child: Text("CLOSE"),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            );
-          }
+          builder: (_) => _buildAlertDialog(context, favoriteFeed.feed),
         ),
         child: _buildListTile(favoriteFeed)
       ),
