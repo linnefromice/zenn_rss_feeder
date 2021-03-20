@@ -53,10 +53,8 @@ class _State extends State<_Contents> {
     final result = widget.feeds.where(
       (element) => element.feed.title.contains(value)
           || element.feed.description.contains(value)
-    ).toList();
-    setState(() {
-      searchedFeeds = result;
-    });
+      ).toList();
+    setState(() => searchedFeeds = result);
   }
 
   void _navigateArticle(final String url) async {
@@ -106,7 +104,6 @@ class _State extends State<_Contents> {
         child: Text(feed.description),
       ),
       actions: <Widget>[
-        // ボタン領域
         TextButton(
           child: Text("Move Site"),
           onPressed: () => _navigateArticle(feed.link)

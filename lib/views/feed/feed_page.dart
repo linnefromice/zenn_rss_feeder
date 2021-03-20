@@ -79,10 +79,8 @@ class _State extends State<_Contents> {
     final result = widget.feeds.where(
       (element) =>
         element.title.contains(value) || element.description.contains(value)
-    ).toList();
-    setState(() {
-      searchedFeeds = result;
-    });
+      ).toList();
+    setState(() => searchedFeeds = result);
   }
 
   TextField _buildSearchField() {
@@ -145,7 +143,6 @@ class _State extends State<_Contents> {
                 child: Text(feed.description),
               ),
               actions: <Widget>[
-                // ボタン領域
                 TextButton(
                   child: Text("Move Site"),
                   onPressed: () async {
