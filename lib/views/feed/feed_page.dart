@@ -83,6 +83,14 @@ class _State extends State<_Contents> {
     setState(() => searchedFeeds = result);
   }
 
+  void _navigateArticle(final String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   TextField _buildSearchField() {
     return TextField(
       decoration: InputDecoration(
@@ -111,14 +119,7 @@ class _State extends State<_Contents> {
   Widget _buildCard(final Feed feed) {
     return Card(
       child: GestureDetector(
-        onTap: () async {
-          var url = feed.link;
-          if (await canLaunch(url)) {
-            await launch(url);
-          } else {
-            throw 'Could not launch $url';
-          }
-        },
+        onTap: () => _navigateArticle(feed.link),
         onLongPress: () async {
           final favoriteFeed = FavoriteFeed(
             genre: widget.topicCode,
@@ -145,14 +146,7 @@ class _State extends State<_Contents> {
               actions: <Widget>[
                 TextButton(
                   child: Text("Move Site"),
-                  onPressed: () async {
-                    var url = feed.link;
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
+                  onPressed: () => _navigateArticle(feed.link),
                 ),
                 TextButton(
                   child: Text("CLOSE"),
