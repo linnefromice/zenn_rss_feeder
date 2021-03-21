@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../core/constants.dart';
+import '../../models/genre.dart';
 import '../favorite_feed/favorite_feed_page.dart';
 import '../feed/feed_page.dart';
 
-class Genre {
-  final String name;
-  final String imgUrl;
-  final String topicCode;
-
-  Genre(this.name, this.imgUrl, this.topicCode);
-}
 final String baseUrl = "https://zenn.dev/topics/";
 final String suffixForRss = "/feed";
 

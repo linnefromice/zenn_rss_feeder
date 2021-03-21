@@ -1,4 +1,4 @@
-import '../views/genre/genre_page.dart';
+import '../models/genre.dart';
 
 final List<Genre> originalGenres = [
   Genre("JavaScript", "https://storage.googleapis.com/zenn-topics/javascript.png", "javascript"),
