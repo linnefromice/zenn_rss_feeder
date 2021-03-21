@@ -78,6 +78,9 @@ class _State extends State<_Contents> {
   }
 
   Widget _buildListTile(final FavoriteFeed favoriteFeed) {
+    final displayedDescription = favoriteFeed.feed.description.length > 100
+        ? "${favoriteFeed.feed.description.substring(0, 100)}..."
+        : favoriteFeed.feed.description;
     return ListTile(
       title: Text(favoriteFeed.feed.title),
       subtitle: Column(
@@ -115,7 +118,7 @@ class _State extends State<_Contents> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(Icons.notes),
-              Text("${favoriteFeed.feed.description.substring(0, 50)}..."),
+              Text(displayedDescription),
             ],
           )
         ],

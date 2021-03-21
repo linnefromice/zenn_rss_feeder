@@ -105,6 +105,9 @@ class _State extends State<_Contents> {
   }
 
   Widget _buildListTile(final Feed feed) {
+    final displayedDescription = feed.description.length > 100
+      ? "${feed.description.substring(0, 100)}..."
+      : feed.description;
     return ListTile(
       title: Text(feed.title),
       subtitle: Column(
@@ -128,7 +131,7 @@ class _State extends State<_Contents> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(Icons.notes),
-              Text("${feed.description.substring(0, 50)}..."),
+              Text(displayedDescription),
             ],
           )
         ],
