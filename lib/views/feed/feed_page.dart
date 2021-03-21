@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:xml2json/xml2json.dart';
 
+import '../../components/common_snack_bar.dart';
 import '../../models/favorite_feed.dart';
 import '../../models/feed.dart';
 import '../../services/favorite_feed_service.dart';
@@ -177,12 +178,3 @@ class _State extends State<_Contents> {
     );
   }
 }
-
-SnackBar successSnackBar({final String message}) => SnackBar(
-  content: Text(
-    message != null ? message : "Success!!",
-    textAlign: TextAlign.center,
-  ),
-  duration: Duration(seconds: 1),
-  backgroundColor: Colors.green[200],
-);
