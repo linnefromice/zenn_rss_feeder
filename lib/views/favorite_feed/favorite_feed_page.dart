@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/constants.dart';
 import '../../models/favorite_feed.dart';
 import '../../models/feed.dart';
 import '../../services/favorite_feed_service.dart';
@@ -81,13 +82,18 @@ class _State extends State<_Contents> {
     final displayedDescription = favoriteFeed.feed.description.length > 100
         ? "${favoriteFeed.feed.description.substring(0, 100)}..."
         : favoriteFeed.feed.description;
+    final genreImageUrl = originalGenres.firstWhere(
+      (element) => element.topicCode == favoriteFeed.genre
+    ).imgUrl;
+
     return ListTile(
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(genreImageUrl)
+      ),
       title: Text(favoriteFeed.feed.title),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(favoriteFeed.genre),
-          Divider(),
           Row(
             children: [
               Row(
