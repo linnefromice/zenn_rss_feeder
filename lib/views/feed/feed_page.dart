@@ -110,8 +110,27 @@ class _State extends State<_Contents> {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("${feed.pubDate} @${feed.authorName}"),
-          Text("${feed.description.substring(0, 50)}...")
+          Row(
+            children: [
+              Icon(Icons.account_circle),
+              Text(feed.authorName),
+            ],
+          ),
+          Divider(),
+          Row(
+            children: [
+              Icon(Icons.update),
+              Text(feed.pubDate),
+            ],
+          ),
+          Divider(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.notes),
+              Text("${feed.description.substring(0, 50)}..."),
+            ],
+          )
         ],
       ),
     );

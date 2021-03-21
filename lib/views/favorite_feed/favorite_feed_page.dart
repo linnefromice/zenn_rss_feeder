@@ -84,9 +84,40 @@ class _State extends State<_Contents> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(favoriteFeed.genre),
-          Text(favoriteFeed.addedDate),
-          Text("${favoriteFeed.feed.pubDate} @${favoriteFeed.feed.authorName}"),
-          Text("${favoriteFeed.feed.description.substring(0, 50)}...")
+          Divider(),
+          Row(
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.add),
+                  Icon(Icons.favorite),
+                ],
+              ),
+              Text(favoriteFeed.addedDate),
+            ],
+          ),
+          Divider(),
+          Row(
+            children: [
+              Icon(Icons.account_circle),
+              Text(favoriteFeed.feed.authorName),
+            ],
+          ),
+          Divider(),
+          Row(
+            children: [
+              Icon(Icons.update),
+              Text(favoriteFeed.feed.pubDate),
+            ],
+          ),
+          Divider(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.notes),
+              Text("${favoriteFeed.feed.description.substring(0, 50)}..."),
+            ],
+          )
         ],
       ),
     );
