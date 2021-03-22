@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../components/feed_detail_dialog.dart';
 import '../../core/constants.dart';
 import '../../models/favorite_feed.dart';
 import '../../models/feed.dart';
@@ -133,26 +134,10 @@ class _State extends State<_Contents> {
   }
 
   Widget _buildAlertDialog(final BuildContext context, final Feed feed) {
-    return AlertDialog(
-      title: Column(
-        children: [
-          Text(feed.title),
-          Text("${feed.pubDate} @${feed.authorName}"),
-        ],
-      ),
-      content: SingleChildScrollView(
-        child: Text(feed.description),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text("Move Site"),
-          onPressed: () => _navigateArticle(feed.link)
-        ),
-        TextButton(
-          child: Text("CLOSE"),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ],
+    return FeedDetailDialog(
+      feed: feed,
+      navigate: () => _navigateArticle(feed.link),
+      pop: () => Navigator.pop(context)
     );
   }
 
