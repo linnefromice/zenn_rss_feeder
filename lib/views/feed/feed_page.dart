@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:xml2json/xml2json.dart';
 
 import '../../components/common_snack_bar.dart';
+import '../../components/feed_detail_dialog.dart';
 import '../../models/favorite_feed.dart';
 import '../../models/feed.dart';
 import '../../services/favorite_feed_service.dart';
@@ -156,26 +157,10 @@ class _State extends State<_Contents> {
         onDoubleTap: () => showDialog(
           context: context,
           builder: (_) {
-            return AlertDialog(
-              title: Column(
-                children: [
-                  Text(feed.title),
-                  Text("${feed.pubDate} @${feed.authorName}"),
-                ],
-              ),
-              content: SingleChildScrollView(
-                child: Text(feed.description),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: Text("Move Site"),
-                  onPressed: () => _navigateArticle(feed.link),
-                ),
-                TextButton(
-                  child: Text("CLOSE"),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
+            return FeedDetailDialog(
+              feed: feed,
+              navigate: () => _navigateArticle(feed.link),
+              pop: () => Navigator.pop(context)
             );
           }
         ),
