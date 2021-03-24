@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:linnefromice/services/favorite_feed_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:xml2json/xml2json.dart';
 
+import '../../components/common_snack_bar.dart';
+import '../../components/feed_detail_dialog.dart';
 import '../../models/favorite_feed.dart';
 import '../../models/feed.dart';
+import '../../services/favorite_feed_service.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({Key key, this.topicCode}) : super(key: key);
@@ -22,7 +24,7 @@ class FeedPage extends StatelessWidget {
       return utf8.decode(response.bodyBytes);
     }).then((bodyString) {
       transformer.parse(bodyString);
-      final String json = transformer.toParker()
+      final json = transformer.toParker()
           .replaceAll("\\.", ""); // FormatException: Unrecognized string escape -> \.
       final List<dynamic> list = jsonDecode(json)['rss']['channel']['item'];
       return list.map((json) => Feed.fromJsonOfParker(json)).toList();
@@ -79,10 +81,16 @@ class _State extends State<_Contents> {
     final result = widget.feeds.where(
       (element) =>
         element.title.contains(value) || element.description.contains(value)
-    ).toList();
-    setState(() {
-      searchedFeeds = result;
-    });
+      ).toList();
+    setState(() => searchedFeeds = result);
+  }
+
+  void _navigateArticle(final String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   TextField _buildSearchField() {
@@ -97,38 +105,66 @@ class _State extends State<_Contents> {
     );
   }
 
+  Widget _buildListTile(final Feed feed) {
+    final displayedDescription = feed.description.length > 100
+      ? "${feed.description.substring(0, 100)}..."
+      : feed.description;
+    return ListTile(
+      title: Text(feed.title),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.account_circle),
+              Text(feed.authorName),
+            ],
+          ),
+          Divider(),
+          Row(
+            children: [
+              Icon(Icons.update),
+              Text(feed.pubDate),
+            ],
+          ),
+          Divider(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.notes),
+              Text(displayedDescription),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   Widget _buildCard(final Feed feed) {
     return Card(
       child: GestureDetector(
-        onTap: () async {
-          var url = feed.link;
-          if (await canLaunch(url)) {
-            await launch(url);
-          } else {
-            throw 'Could not launch $url';
-          }
-        },
+        onTap: () => _navigateArticle(feed.link),
         onLongPress: () async {
-          final favorited = FavoriteFeed(
+          final favoriteFeed = FavoriteFeed(
             genre: widget.topicCode,
             feed: feed,
             addedDate: DateTime.now().toString()
           );
-          await FavoriteFeedService.insert(favorited);
+          await FavoriteFeedService.insert(favoriteFeed);
           ScaffoldMessenger.of(context)
               .showSnackBar(successSnackBar(message: "Add Favorite Feed!!!"));
         },
-        child: ListTile(
-          title: Text(feed.title),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(feed.authorName),
-              Text(feed.pubDate),
-              Text(feed.description)
-            ],
-          ),
+        onDoubleTap: () => showDialog(
+          context: context,
+          builder: (_) {
+            return FeedDetailDialog(
+              feed: feed,
+              navigate: () => _navigateArticle(feed.link),
+              pop: () => Navigator.pop(context)
+            );
+          }
         ),
+        child: _buildListTile(feed)
       ),
     );
   }
@@ -149,12 +185,3 @@ class _State extends State<_Contents> {
     );
   }
 }
-
-SnackBar successSnackBar({final String message}) => SnackBar(
-  content: Text(
-    message != null ? message : "Success!!",
-    textAlign: TextAlign.center,
-  ),
-  duration: Duration(seconds: 1),
-  backgroundColor: Colors.green[200],
-);
